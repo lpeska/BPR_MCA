@@ -1,4 +1,3 @@
-
 import os
 import time
 import numpy as np
@@ -15,37 +14,6 @@ def load_matrix(dataset, folder, shape, first):
     intMat = np.array(int_array, dtype=np.float64)  
     return intMat
     
-    """if first:
-        return sp.csr_matrix(intMat).reshape( (shape[0],shape[0]))#.eliminate_zeros()
-    else:
-        return sp.csr_matrix(intMat).reshape((shape[1],shape[1]))#.eliminate_zeros()
-    """    
-def load_data_from_file(dataset, folder):
-    #print(os.path.join(folder, dataset+"_admat_dgc.txt"))
-    with open(os.path.join(folder, dataset+"_admat_dgc.txt"), "r") as inf:
-        inf.next()
-        int_array = [line.strip("\n").split()[1:] for line in inf]
-
-    with open(os.path.join(folder, dataset+"_simmat_dc.txt"), "r") as inf:  # the drug similarity file
-        inf.next()
-        drug_sim = [line.strip("\n").split()[1:] for line in inf]
-
-    with open(os.path.join(folder, dataset+"_simmat_dg.txt"), "r") as inf:  # the target similarity file
-        inf.next()
-        target_sim = [line.strip("\n").split()[1:] for line in inf]
-
-    intMat = np.array(int_array, dtype=np.float64).T    # drug-target interaction matrix
-    drugMat = np.array(drug_sim, dtype=np.float64)      # drug similarity matrix
-    targetMat = np.array(target_sim, dtype=np.float64)  # target similarity matrix
-    return intMat, drugMat, targetMat
-
-
-def get_drugs_targets_names(dataset, folder):
-    with open(os.path.join(folder, dataset+"_admat_dgc.txt"), "r") as inf:
-        drugs = inf.next().strip("\n").split()
-        targets = [line.strip("\n").split()[0] for line in inf]
-    return drugs, targets
-
 
 def cross_validation(intMat, seeds, cv=1, invert=0, fract=0.75):
    
@@ -127,20 +95,6 @@ def load_metric_vector(file_name):
     return np.loadtxt(file_name, dtype=np.float64)
 
 
-def plot_aupr(self, prec, rec, thr, name):
-    import matplotlib.pyplot as plt
-    plt.clf()
-    plt.ioff()
-    plt.plot(rec, prec, label='Precision-Recall')
-    plt.xlabel('Recall')
-    plt.ylabel('Precision')
-    plt.ylim([0.0, 1.05])
-    plt.xlim([0.0, 1.0])
-    plt.title('Precision-Recall ')
-    plt.legend(loc="lower left")
-    fig = plt.figure()
-    fig.savefig(name+'.png', bbox_inches='tight')
-    fig.savefig(name+'.pdf', bbox_inches='tight')
        
     
 def normalized_discounted_cummulative_gain(test_data,test_label, scores):
